@@ -1,3 +1,5 @@
+import gimnasio.conexion;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.sql.Connection;
@@ -7,6 +9,7 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+
 
 public class ventas extends JFrame {
 
@@ -23,6 +26,7 @@ public class ventas extends JFrame {
     private JTable tableDetalle;
     private JLabel lblTotal;
     private JButton btnConfirmarVenta;
+
 
     // Variables de estado
     private Connection con = null;

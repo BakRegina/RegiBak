@@ -1,12 +1,18 @@
 package gimnasio;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.awt.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 
 public class rutinas extends JPanel {
@@ -26,18 +32,21 @@ public class rutinas extends JPanel {
     private JButton limpiarButton;
     private JButton btnDetalles;
     private JButton agregarRutinaButton;
+    private DefaultComboBoxModel clientedefault;
+    DefaultTableModel javaTable = new DefaultTableModel(){
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        };
+
+    };
 
     private String nombre_usuario;
     Connection con = null;
 
     public rutinas(String nombre_usuario) {
         this.nombre_usuario = nombre_usuario;
-        agregarRutinaButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                RutinaDetallesFrame det= new mostrarVentana(panel2);
-            }
-        });
+
 
         setLayout(new BorderLayout());
         add(panel1, BorderLayout.CENTER);
@@ -77,8 +86,33 @@ public class rutinas extends JPanel {
             });
         }
         agregarRutinaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                RutinaDetallesFrame det= new RutinaDetallesFrame();
+                det.mostrarVentana();
+            }
         });
     }
+
+    private void cargarClientes() {
+        if (con == null) return;
+        comboBox1.removeAllItems();
+        comboBox1.addItem("Seleccione un cliente...");
+
+        String sql = "SELECT id_cliente, nombre, apellido FROM usuario_clientes ORDER BY apellido";
+        try (PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                // Formato: ID - Apellido, Nombre
+                String item = rs.getInt("id_cliente") + " - " + rs.getString("apellido") + ", " + rs.getString("nombre");
+                comboBox1.addItem(item);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar clientes: " + e.getMessage());
+        }
+    }
+
 
     private void limpiarCampos() { /* Lógica de limpieza */ }
     private void eliminarRutina() { /* Lógica de eliminación */ }
@@ -87,11 +121,25 @@ public class rutinas extends JPanel {
     private void buscarRutina() { /* Lógica de búsqueda */ }
     private void cargarTabla() { /* Lógica de carga de tabla */ }
     private void cargarEntrenadores() { /* Lógica de carga de entrenadores */ }
-    private void cargarClientes() { /* Lógica de carga de clientes */ }
+
 
 
     private void verDetallesRutina() {
+        javaTable.addColumn("Usuario");
+        javaTable.addColumn("Nombre");
+        javaTable.addColumn("Apellido");
+        javaTable.addColumn("Documento");
+        table1.setModel(javaTable);
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        TableColumn columna;
+        for(int i = 0; i<table1.getColumnCount(); i++){
+            table1.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+
+
         if (table1 == null) return;
+
         int fila = table1.getSelectedRow();
         if (fila < 0) {
             JOptionPane.showMessageDialog(this, "Seleccione una rutina para ver los detalles y asignar ejercicios.", "Advertencia", JOptionPane.WARNING_MESSAGE);
@@ -102,8 +150,6 @@ public class rutinas extends JPanel {
         String nombreRutina = table1.getValueAt(fila, 1).toString();
 
         // Esta línea ya debería funcionar correctamente
-        RutinaDetallesFrame detallesFrame = new RutinaDetallesFrame(idRutina, nombreRutina);
-        detallesFrame.setVisible(true);
     }
 
 

@@ -2,6 +2,7 @@
   <library name="mysql-connector-j-9.3.0">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/../../../../../../mysql-connector-j-9.3.0/mysql-connector-j-9.3.0/mysql-connector-j-9.3.0.jar!/" />
+      <root url="jar://$USER_HOME$/Desktop/Analista en Sistema ISET/2do Año/Programacion II/SIU Guarani/src/mysql-connector-java-8.0.13.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

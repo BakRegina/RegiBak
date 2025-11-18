@@ -26,15 +26,14 @@ public class RutinaDetallesFrame extends JFrame {
     private Connection con;
     private JPanel panel2;
 
-    public RutinaDetallesFrame(int idRutina, String nombreRutina) {
-        this.idRutina = idRutina;
+    public RutinaDetallesFrame() {
 
-        setTitle("Detalles de Rutina: " + nombreRutina);
+        setTitle("Detalles de Rutina: " );
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         // CRÍTICO: Enlazar el diseño del .form
-        if (panelPrincipal != null) {
-            setContentPane(panelPrincipal);
+        if (panel2 != null) {
+            setContentPane(panel2);
             setSize(800, 600);
             setLocationRelativeTo(null);
         } else {
@@ -43,7 +42,6 @@ public class RutinaDetallesFrame extends JFrame {
             setSize(800, 600);
         }
 
-        lblTitulo.setText("Rutina: " + nombreRutina);
 
         con = conexion.conectar();
 
@@ -84,7 +82,7 @@ public class RutinaDetallesFrame extends JFrame {
         try {
             // Unir la tabla de registro_ejercicios con la de ejercicios para mostrar el nombre
             String sql = "SELECT re.id_registro, e.id_ejercicio, e.nombre, re.series, re.repeticiones, re.peso " +
-                    "FROM registro_ejercicios re " +
+                    "FROM rutina_ejercicios re " +
                     "JOIN ejercicios e ON re.id_ejercicio = e.id_ejercicio " +
                     "WHERE re.id_rutina = ?";
 
@@ -117,20 +115,20 @@ public class RutinaDetallesFrame extends JFrame {
             // Extraer el ID del ejercicio del ComboBox
             String selectedItem = (String) cmbEjercicios.getSelectedItem();
             int idEjercicio = Integer.parseInt(selectedItem.split(" - ")[0]);
+            System.out.println(idEjercicio);
 
             int series = Integer.parseInt(txtSeries.getText().trim());
             int repeticiones = Integer.parseInt(txtRepeticiones.getText().trim());
             double peso = Double.parseDouble(txtPeso.getText().trim());
 
             // Insertar en la tabla registro_ejercicios, usando el campo fecha como NULL ya que es la rutina base.
-            String sql = "INSERT INTO registro_ejercicios (id_rutina, id_ejercicio, series, repeticiones, peso) VALUES (?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO registros_progreso (id_ejercicio, series, repeticiones, peso) VALUES (?, ?, ?, ?)";
 
             try (PreparedStatement ps = con.prepareStatement(sql)) {
-                ps.setInt(1, idRutina);
-                ps.setInt(2, idEjercicio);
-                ps.setInt(3, series);
-                ps.setInt(4, repeticiones);
-                ps.setDouble(5, peso);
+                ps.setInt(1, idEjercicio);
+                ps.setInt(2, series);
+                ps.setInt(3, repeticiones);
+                ps.setDouble(4, peso);
 
                 ps.executeUpdate();
                 JOptionPane.showMessageDialog(this, "Ejercicio añadido a la rutina.");
@@ -157,7 +155,7 @@ public class RutinaDetallesFrame extends JFrame {
         int respuesta = JOptionPane.showConfirmDialog(this, "¿Eliminar este ejercicio de la rutina?", "Confirmar", JOptionPane.YES_NO_OPTION);
 
         if (respuesta == JOptionPane.YES_OPTION) {
-            String sql = "DELETE FROM registro_ejercicios WHERE id_registro = ?";
+            String sql = "DELETE FROM registros_progreso WHERE id_registro = ?";
             try (PreparedStatement ps = con.prepareStatement(sql)) {
                 ps.setInt(1, idRegistro);
                 if (ps.executeUpdate() > 0) {
@@ -181,7 +179,6 @@ public class RutinaDetallesFrame extends JFrame {
         frame.setContentPane(panel2);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();
-        JTableHeader tableHeader = new JTableHeader();
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         int x = (int) ((dimension.getWidth() - frame.getWidth()) / 2);
         int y = (int) ((dimension.getHeight() - frame.getHeight()) / 2);

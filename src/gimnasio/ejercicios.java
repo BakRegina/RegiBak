@@ -16,11 +16,19 @@ public class ejercicios extends JPanel {
     private JTextField txtLinkVideo; // Nuevo campo basado en tu BD
     private JButton btnAgregar;
     private JTable tableEjercicios;
-    
+    private JButton btnCargarPreview;
+    private JTextField txtUrlGif;
+    private JLabel lblPreviewGif;
+    private JButton btnGuardar;
+    private JButton btnModificar;
+    private JButton btnEliminar;
+    private JButton btnLimpiar;
+    private JTextField txtBuscar;
+    private JTable table1;
+
     private Connection con = null;
 
     public ejercicios() {
-        initComponents();
         setLayout(new BorderLayout());
         add(panel1, BorderLayout.CENTER);
         
@@ -34,26 +42,6 @@ public class ejercicios extends JPanel {
         }
     }
 
-    private void initComponents() {
-        panel1 = new JPanel(new BorderLayout());
-        txtNombre = new JTextField(20);
-        txtDescripcion = new JTextField(30);
-        txtLinkVideo = new JTextField(25);
-        btnAgregar = new JButton("Agregar Ejercicio");
-        tableEjercicios = new JTable();
-        
-        JPanel inputPanel = new JPanel(new FlowLayout());
-        inputPanel.add(new JLabel("Nombre:"));
-        inputPanel.add(txtNombre);
-        inputPanel.add(new JLabel("Descripción:"));
-        inputPanel.add(txtDescripcion);
-        inputPanel.add(new JLabel("Link Video:"));
-        inputPanel.add(txtLinkVideo);
-        inputPanel.add(btnAgregar);
-
-        panel1.add(inputPanel, BorderLayout.NORTH);
-        panel1.add(new JScrollPane(tableEjercicios), BorderLayout.CENTER);
-    }
 
     private void agregarEjercicio(ActionEvent e) {
         if (con == null) return;

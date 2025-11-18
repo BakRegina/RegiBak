@@ -39,7 +39,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="fe377" class="javax.swing.JTextArea" binding="txtDescripcion">
+          <component id="fe377" class="javax.swing.JTextField" binding="txtDescripcion">
             <constraints/>
             <properties/>
           </component>

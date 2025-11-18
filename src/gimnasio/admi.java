@@ -21,7 +21,6 @@ public class admi extends JFrame {
 
         setTitle("Panel de Administración - Gimnasio | Usuario: " + nombre_usuario);
 
-        initComponents();
 
         setSize(1200, 800);
         setLocationRelativeTo(null);
@@ -79,6 +78,7 @@ public class admi extends JFrame {
 
         if (isAdmin || esCliente) {
             Pestanias.addTab("Clientes", paneles.get("Clientes"));
+
         }
 
         if (paneles.containsKey("Ejercicios")) {

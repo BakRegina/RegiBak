@@ -21,7 +21,7 @@ public class ReportesProgresoPanel extends JPanel {
     private JTable tableReporte;
     private JScrollPane scrollTable;
 
-    private Connection con = null;
+    public Connection con = null;
 
     // Almacena el ID del cliente seleccionado para futuras consultas
     private int idClienteSeleccionado = -1;
@@ -39,7 +39,13 @@ public class ReportesProgresoPanel extends JPanel {
         }
 
         // 4. Listeners
-        btnGenerarReporte.addActionListener(e -> generarReporte());
+        btnGenerarReporte.addActionListener(e -> {
+            try {
+                generarReporte();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
 
         // Listener para cargar ejercicios cuando se selecciona un cliente
         cmbClientes.addActionListener(new ActionListener() {
@@ -118,7 +124,7 @@ public class ReportesProgresoPanel extends JPanel {
 
     // --- LÓGICA DEL REPORTE ---
 
-    private void generarReporte() {
+    private void generarReporte() throws SQLException {
         if (con == null || idClienteSeleccionado == -1) {
             JOptionPane.showMessageDialog(this, "Debe seleccionar un cliente para generar el reporte.", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
@@ -140,34 +146,29 @@ public class ReportesProgresoPanel extends JPanel {
                 // No se pudo parsear el ID, se ignora el filtro de ejercicio
             }
         }
+        PreparedStatement PS = null;
+        ResultSet RS = null;
 
-        // Construcción de la consulta SQL dinámica
-        StringBuilder sql = new StringBuilder();
-        sql.append("SELECT rp.fecha, e.nombre, rp.series_realizadas, rp.repeticiones_realizadas, rp.peso_utilizado ");
-        sql.append("FROM registros_progreso rp ");
-        sql.append("JOIN rutina_ejercicios re ON rp.id_rutina_ejercicio = re.id_rutina_ejercicio ");
-        sql.append("JOIN ejercicios e ON re.id_ejercicio = e.id_ejercicio ");
-        sql.append("WHERE rp.id_cliente = ? ");
-
+        String sql = "";
         // Parámetros dinámicos para el PreparedStatement
         int paramIndex = 1;
 
         if (idEjercicioFiltro != null) {
-            sql.append("AND e.id_ejercicio = ? ");
+            sql = "SELECT rp.fecha, e.nombre, rp.series_realizadas, rp.repeticiones_realizadas, rp.peso_utilizado FROM registros_progreso as rp JOIN rutina_ejercicios as re ON rp.id_rutina_ejercicio = re.id_rutina_ejercicio JOIN ejercicios as e ON re.id_ejercicio = e.id_ejercicio WHERE rp.id_cliente = ?  AND e.id_ejercicio = ? ";
         }
 
         // Validación de formato de fecha simple (asume que el usuario ingresa YYYY-MM-DD o lo deja vacío)
         if (!fechaInicio.isEmpty() && !fechaInicio.equals("YYYY-MM-DD")) {
-            sql.append("AND rp.fecha >= ? ");
+            sql = "SELECT rp.fecha, e.nombre, rp.series_realizadas, rp.repeticiones_realizadas, rp.peso_utilizado FROM registros_progreso as rp JOIN rutina_ejercicios as re ON rp.id_rutina_ejercicio = re.id_rutina_ejercicio JOIN ejercicios as e ON re.id_ejercicio = e.id_ejercicio WHERE rp.id_cliente = ?  AND e.id_ejercicio = ? ";
         }
 
         if (!fechaFin.isEmpty() && !fechaFin.equals("YYYY-MM-DD")) {
-            sql.append("AND rp.fecha <= ? ");
+            sql = "SELECT rp.fecha, e.nombre, rp.series_realizadas, rp.repeticiones_realizadas, rp.peso_utilizado FROM registros_progreso as rp JOIN rutina_ejercicios as re ON rp.id_rutina_ejercicio = re.id_rutina_ejercicio JOIN ejercicios as e ON re.id_ejercicio = e.id_ejercicio WHERE rp.id_cliente = ?  AND e.id_ejercicio = ? AND rp.fecha <= ? ";
         }
 
-        sql.append("ORDER BY rp.fecha DESC, e.nombre ASC");
+        sql = "SELECT rp.fecha, e.nombre, rp.series_realizadas, rp.repeticiones_realizadas, rp.peso_utilizado FROM registros_progreso as rp JOIN rutina_ejercicios as re ON rp.id_rutina_ejercicio = re.id_rutina_ejercicio JOIN ejercicios as e ON re.id_ejercicio = e.id_ejercicio WHERE rp.id_cliente = ?  AND e.id_ejercicio = ? ORDER BY rp.fecha DESC, e.nombre ASC";
 
-        try (PreparedStatement ps = con.prepareStatement(sql.toString())) {
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
 
             // 1. Establecer id_cliente
             ps.setInt(paramIndex++, idClienteSeleccionado);
