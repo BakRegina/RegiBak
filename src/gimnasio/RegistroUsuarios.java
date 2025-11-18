@@ -1,3 +1,4 @@
+package gimnasio;
 import javax.swing.*;
 import java.awt.*;
 import java.sql.Connection;
@@ -127,10 +128,7 @@ public class RegistroUsuarios extends JFrame {
         panelEntrenadores.add(botones, BorderLayout.SOUTH);
     }
 
-    // ===============================
-    // MÉTODOS DE REGISTRO
-    // ===============================
-
+        // MÉTODOS DE REGISTRO
     private void registrarCliente() {
         String dni = dniClienteField.getText().trim();
         String nombre = nombreClienteField.getText().trim();

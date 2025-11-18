@@ -1,6 +1,5 @@
-
+package gimnasio;
 import java.sql.Connection;
-import java.sql.SQLException;
 
 public class main {
     public static void main(String[] args) {

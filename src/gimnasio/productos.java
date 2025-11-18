@@ -1,16 +1,13 @@
-
+package gimnasio;
 import javax.accessibility.AccessibleContext;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.awt.*; // Asegurar importación de AWT
 
 public class productos extends JFrame { // Podría extender JPanel si se diseñó solo un panel
     private JPanel panel1;
@@ -31,26 +28,14 @@ public class productos extends JFrame { // Podría extender JPanel si se diseñ�
     PreparedStatement ps = null;
     ResultSet rs = null;
 
-    public productos(String nombre_usuario) {
+    public productos() {
 
-        // La configuración de JFrame (setTitle, setSize, setDefaultCloseOperation)
-        // no tiene efecto cuando se usa dentro de JTabbedPane.
 
         con = conexion.conectar(); // conexión a la base
 
         if (con != null) {
             cargarTabla();
         }
-
-        // 🚨 Lógica del botón VOLVER comentada/anulada.
-        /*
-        volverButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-               volver(); // Eliminamos el método volver
-            }
-        });
-        */
 
         // ActionListeners originales
         buscarButton.addActionListener(e -> buscarProducto());
@@ -161,5 +146,9 @@ public class productos extends JFrame { // Podría extender JPanel si se diseñ�
     // --- ELIMINAR PRODUCTO ---
     private void eliminarProducto() {
         AccessibleContext fila = table1.getAccessibleContext();
+    }
+    public JPanel getPanel1() {
+        JPanel panelPrincipal = null;
+        return panelPrincipal;
     }
 }
