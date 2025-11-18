@@ -245,7 +245,7 @@ public class entrenadores extends JPanel  {
     PreparedStatement ps = null;
     ResultSet rs = null;
 
-    public entrenadores() {
+    public entrenadores(String nombre_usuario) {
         setLayout(new BorderLayout());
         add(panel1, BorderLayout.CENTER);
 

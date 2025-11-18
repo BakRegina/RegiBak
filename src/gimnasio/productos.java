@@ -65,9 +65,6 @@ public class productos extends JFrame { // Podría extender JPanel si se diseñ�
     private void buscarProducto() {
     }
 
-    // El método 'volver' se elimina o se comenta.
-    /* private void volver() { ... } */
-
     // --- CARGAR TABLA ---
     private void cargarTabla() {
         DefaultTableModel modelo = new DefaultTableModel();
@@ -147,8 +144,8 @@ public class productos extends JFrame { // Podría extender JPanel si se diseñ�
     private void eliminarProducto() {
         AccessibleContext fila = table1.getAccessibleContext();
     }
+
     public JPanel getPanel1() {
-        JPanel panelPrincipal = null;
-        return panelPrincipal;
+        return panel1;
     }
 }

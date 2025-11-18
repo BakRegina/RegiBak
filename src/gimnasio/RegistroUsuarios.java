@@ -281,7 +281,4 @@ public class RegistroUsuarios extends JFrame {
         contrasenaEntrenadorField.setText("");
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new RegistroUsuarios().setVisible(true));
-    }
 }

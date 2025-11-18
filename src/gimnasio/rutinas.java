@@ -1,23 +1,16 @@
 package gimnasio;
 
-import gimnasio.conexion;
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.time.LocalDate;
 import java.awt.*;
 
 
 public class rutinas extends JPanel {
 
-    // Las siguientes variables DEBEN estar enlazadas por el IDE a tu rutinas.form
     private JPanel panel1; // Panel raíz de la interfaz (se devuelve con getPanel1)
     private JButton volverButton;
     private JTextField textField1;
@@ -32,24 +25,20 @@ public class rutinas extends JPanel {
     private JButton eliminarButton;
     private JButton limpiarButton;
     private JButton btnDetalles;
-
-    // El método initComponents() DEBE ser el que genera tu IDE al diseñar el formulario.
-    // (Asegúrate de no tener uno escrito a mano que sobreescriba el diseño)
-    private void initComponents() {
-        // *** CÓDIGO GENERADO AUTOMÁTICAMENTE POR TU IDE ***
-        // No lo modifiques, solo asegúrate de que se genere al guardar el .form.
-    }
+    private JButton agregarRutinaButton;
 
     private String nombre_usuario;
     Connection con = null;
 
     public rutinas(String nombre_usuario) {
         this.nombre_usuario = nombre_usuario;
+        agregarRutinaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                RutinaDetallesFrame det= new mostrarVentana(panel2);
+            }
+        });
 
-        // El IDE llama a este método para construir el panel1 y todos los componentes del .form
-        initComponents();
-
-        // CRÍTICO: Configurar el layout del JPanel que extiende esta clase
         setLayout(new BorderLayout());
         add(panel1, BorderLayout.CENTER);
 
@@ -87,6 +76,8 @@ public class rutinas extends JPanel {
                 }
             });
         }
+        agregarRutinaButton.addActionListener(new ActionListener() {
+        });
     }
 
     private void limpiarCampos() { /* Lógica de limpieza */ }
@@ -115,7 +106,7 @@ public class rutinas extends JPanel {
         detallesFrame.setVisible(true);
     }
 
-    // 3. REQUISITO CRÍTICO: Método para que admi.java obtenga el panel
+
     public JPanel getPanel1() {
         return panel1;
     }

@@ -377,11 +377,11 @@ public class ventas extends JFrame {
     private JLabel lblNombreCliente;
     private JComboBox<String> cmbProductos;
     private JTextField txtCantidad;
-    private JButton button1;
     private JButton btnAgregarProducto;
     private JTable tableDetalle;
     private JLabel lblTotal;
     private JButton btnConfirmarVenta;
+    private JTextField textField1;
 
     private Connection con = null;
     private int idClienteSeleccionado = -1;

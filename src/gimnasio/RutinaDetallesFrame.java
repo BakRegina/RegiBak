@@ -1,6 +1,8 @@
 package  gimnasio;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import java.awt.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,7 +24,7 @@ public class RutinaDetallesFrame extends JFrame {
 
     private int idRutina;
     private Connection con;
-    private JPanel panel1;
+    private JPanel panel2;
 
     public RutinaDetallesFrame(int idRutina, String nombreRutina) {
         this.idRutina = idRutina;
@@ -173,5 +175,17 @@ public class RutinaDetallesFrame extends JFrame {
         txtRepeticiones.setText("");
         txtPeso.setText("");
         cmbEjercicios.setSelectedIndex(-1);
+    }
+    public void mostrarVentana() {
+        JFrame frame = new JFrame("Agregar forma");
+        frame.setContentPane(panel2);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.pack();
+        JTableHeader tableHeader = new JTableHeader();
+        Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+        int x = (int) ((dimension.getWidth() - frame.getWidth()) / 2);
+        int y = (int) ((dimension.getHeight() - frame.getHeight()) / 2);
+        frame.setLocation(x, y);
+        frame.setVisible(true);
     }
 }

@@ -199,50 +199,7 @@ public class ClientesPanel extends JPanel {
     }
 
     private void agregarCliente() {
-        if (con == null) return;
 
-        String dni = txtDni.getText().trim();
-        String nombre = txtNombre.getText().trim();
-        String apellido = txtApellido.getText().trim();
-        String telefono = txtTelefono.getText().trim();
-        String usuario = txtUsuario.getText().trim();
-        String contrasena = txtContrasena.getText();
-
-        if (dni.isEmpty() || nombre.isEmpty() || apellido.isEmpty() || usuario.isEmpty() || contrasena.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Los campos DNI, Nombre, Apellido, Usuario y Contraseña son obligatorios.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        try {
-            if (!dni.matches("\\d+")) {
-                JOptionPane.showMessageDialog(this, "El DNI debe contener solo números.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-        } catch (Exception e) {}
-
-
-        String sql = "INSERT INTO usuario_clientes (dni, nombre, apellido, telefono, nombre_usuario, contrasena) VALUES (?, ?, ?, ?, ?, ?)";
-
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, dni);
-            ps.setString(2, nombre);
-            ps.setString(3, apellido);
-            ps.setString(4, telefono);
-            ps.setString(5, usuario);
-            ps.setString(6, contrasena);
-
-            int filasAfectadas = ps.executeUpdate();
-
-            if (filasAfectadas > 0) {
-                JOptionPane.showMessageDialog(this, "Cliente agregado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                limpiarCampos();
-                cargarClientes();
-            } else {
-                JOptionPane.showMessageDialog(this, "No se pudo agregar el cliente.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Error al agregar cliente: " + e.getMessage(), "Error SQL", JOptionPane.ERROR_MESSAGE);
-        }
     }
 
     private void modificarCliente() {
